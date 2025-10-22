@@ -1,0 +1,10 @@
+@use "../utility" as u;
+
+.desktop {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+
+  @include u.breakpoint(x1600) {
+    grid-template-columns: 1.6fr 1.2fr;
+  }
+}

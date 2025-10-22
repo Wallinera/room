@@ -1,0 +1,76 @@
+@use "../utility" as u;
+.shop {
+  margin-bottom: 5rem;
+  p {
+    margin-bottom: 3rem;
+  }
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    font-family: u.$font-spartan;
+    font-weight: 500;
+    letter-spacing: 1rem;
+    font-size: 2rem;
+    transition: color ease-out 0.3s;
+    span {
+      margin-left: 1.2rem;
+    }
+  }
+  a:active,
+  a:hover {
+    color: var(--grey-500);
+  }
+
+  @include u.breakpoint(medium) {
+    margin-bottom: 8rem;
+
+    h1 {
+      font-size: 4.2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    p {
+      font-size: 2rem;
+      margin-bottom: 5rem;
+      text-align: center;
+    }
+  }
+
+  @include u.breakpoint(large) {
+    p {
+      text-align: left;
+    }
+  }
+
+  @include u.breakpoint(xlarge) {
+    margin: 0;
+    padding: 11rem 7.8rem;
+
+    h1,
+    p,
+    a {
+      text-align: left;
+    }
+
+    p,
+    a {
+      margin-bottom: 3rem;
+      font-size: 1.6rem;
+      line-height: 1.3;
+    }
+  }
+
+  @include u.breakpoint(x1600) {
+    padding: 15rem 7rem 0rem 7rem;
+
+    p {
+      font-size: 2rem;
+      line-height: 1.3;
+    }
+    a {
+      font-size: 2.4rem;
+      display: inline-block;
+    }
+  }
+}
