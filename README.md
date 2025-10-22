@@ -1,93 +1,243 @@
-# Frontend Mentor - Room homepage
+import "./scss/style.scss";
 
-![Design preview for the Room homepage coding challenge](preview.jpg)
+import heroImg1Desktop from "../src/images/desktop-image-hero-1.jpg";
+import heroImg2Desktop from "../src/images/desktop-image-hero-2.jpg";
+import heroImg3Desktop from "../src/images/desktop-image-hero-3.jpg";
+import heroImg1Mobile from "../src/images/mobile-image-hero-1.jpg";
+import heroImg2Mobile from "../src/images/mobile-image-hero-2.jpg";
+import heroImg3Mobile from "../src/images/mobile-image-hero-3.jpg";
 
-## Welcome! 👋
+import navBtnOpen from "../src/images/icon-hamburger.svg";
+import navBtnClose from "../src/images/icon-close.svg";
 
-Thanks for checking out this front-end coding challenge.
+import logo from "../src/images/logo.svg";
+import leftIcon from "../src/images/icon-angle-left.svg";
+import rightIcon from "../src/images/icon-angle-right.svg";
+import arrow from "../src/images/icon-arrow.svg";
+import aboutImgDark from "../src/images/image-about-dark.jpg";
+import aboutImgLight from "../src/images/image-about-light.jpg";
+import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+const heroData = [
+{
+heading: "Discover innovative ways to decorate",
+text: ` We provide unmatched quality, comfort, and style for property owners
+        across the country. Our experts combine form and function in bringing
+        your vision to life. Create a room in your own style with our collection
+        and make your property a reflection of you and what you love.`,
 
-**To do this challenge, you need a basic understanding of HTML, CSS and JavaScript.**
+    imgMobile: heroImg1Mobile,
+    imgDesktop: heroImg1Desktop,
+    id: 1,
 
-## The challenge
+},
+{
+heading: "We are available all across the globe",
+text: `With stores all over the world, it's easy for you to find furniture for
+        your home or place of business. Locally, we're in most major cities
+        throughout the country. Find the branch nearest you using our store
+        locator. Any questions? Don't hesitate to contact us today.`,
 
-Your challenge is to build out this e-commerce homepage and get it looking as close to the design as possible.
+    imgMobile: heroImg2Mobile,
+    imgDesktop: heroImg2Desktop,
 
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
+    id: 2,
 
-Your users should be able to:
+},
+{
+heading: "Manufactured with the best materials",
+text: ` Our modern furniture store provide a high level of quality. Our company
+        has invested in advanced technology to ensure that every product is made
+        as perfect and as consistent as possible. With three decades of
+        experience in this industry, we understand what customers want for their
+        home and office.`,
+imgMobile: heroImg3Mobile,
+imgDesktop: heroImg3Desktop,
 
-- View the optimal layout for the site depending on their device's screen size
-- See hover states for all interactive elements on the page
-- Navigate the slider using either their mouse/trackpad or keyboard
+    id: 3,
 
-Want some support on the challenge? [Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+},
+];
 
-## Where to find everything
+export default function App() {
+const [selectedContentId, setSelectedContentId] = useState(1);
+const selectedContent = heroData.find(
+(content) => content.id === selectedContentId
+);
+const isLargeWidth = useMediaQuery({ minWidth: 900 });
+const isDesktop = useMediaQuery({ minWidth: 1440 });
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
+return (
+<main className={`${isDesktop ? "desktop" : ""}`}>
+<Navigation isDesktop={isDesktop} />
+<Hero
+heroImg={
+isLargeWidth ? selectedContent.imgDesktop : selectedContent.imgMobile
+}
+setSelectedContentId={setSelectedContentId}
+/>
+<Shop selectedContent={selectedContent} />
+<About />
+</main>
+);
+}
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`.
+function Navigation({ isDesktop }) {
+const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
-If you would like the Figma design file to inspect the design in more detail, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+function onMenuBtnClick() {
+document.body.style.overflow = !isMobileNavOpen ? "hidden" : "";
 
-You will find all the required assets in the `/images` folder. The assets are already optimized.
+    setIsMobileNavOpen(!isMobileNavOpen);
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+}
 
-## Building your project
+return isDesktop ? (
+<>
+<nav className={`nav container`}>
+<img src={logo} alt="Logo" className="nav__logo" tabIndex={0}></img>
+<ul className="nav__links">
+<li>
+<a href="home" className="nav__link">
+home
+</a>
+</li>
+<li>
+<a href="shop" className="nav__link">
+shop
+</a>
+</li>
+<li>
+<a href="about" className="nav__link">
+about
+</a>
+</li>
+<li>
+<a href="contact" className="nav__link">
+contact
+</a>
+</li>
+</ul>
+</nav>
+</>
+) : (
+<>
+{isMobileNavOpen && <div className="overlay"></div>}
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+      <nav className={`nav container ${isMobileNavOpen ? "nav__open" : ""}`}>
+        <img
+          src={isMobileNavOpen ? navBtnClose : navBtnOpen}
+          alt="menu button"
+          className="nav__btn"
+          onClick={onMenuBtnClick}
+          onKeyDown={(e) => e.key === "Enter" && onMenuBtnClick()}
+          tabIndex={0}
+        ></img>
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+        {isMobileNavOpen ? (
+          <ul className="nav__links">
+            <li>
+              <a href="-" className="nav__link">
+                home
+              </a>
+            </li>
+            <li>
+              <a href="-" className="nav__link">
+                shop
+              </a>
+            </li>
+            <li>
+              <a href="-" className="nav__link">
+                about
+              </a>
+            </li>
+            <li>
+              <a href="-" className="nav__link">
+                contact
+              </a>
+            </li>
+          </ul>
+        ) : (
+          <img src={logo} alt="Logo" className="nav__logo"></img>
+        )}
+      </nav>
+    </>
 
-## Deploying your project
+);
+}
 
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
+function Hero({ heroImg, setSelectedContentId }) {
+function onClickRight() {
+setSelectedContentId((id) => {
+if (id < heroData.length) return id + 1;
+else {
+return 1;
+}
+});
+}
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+function onClickLeft() {
+setSelectedContentId((id) => {
+if (id > 1) return id - 1;
+else {
+return heroData.length;
+}
+});
+}
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://medium.com/frontend-mentor/frontend-mentor-trusted-hosting-providers-bf000dfebe).
+return (
+<section className="hero">
+<div className="hero__image-box">
+<img src={heroImg} alt="hero content"></img>
+</div>
+<div className="hero__slider-btns">
+<button onClick={onClickLeft}>
+<img src={leftIcon} alt="left arrow"></img>
+</button>
+<button onClick={onClickRight}>
+<img src={rightIcon} alt="right arrow"></img>
+</button>
+</div>
+</section>
+);
+}
 
-## Create a custom `README.md`
+function Shop({ selectedContent }) {
+return (
+<section className="shop container">
+<h1>{selectedContent.heading}</h1>
+<p>{selectedContent.text}</p>
+<a href="-">
+SHOP NOW{" "}
+<span>
+<img src={arrow} alt="arrow pointing right" />
+</span>
+</a>
+</section>
+);
+}
 
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
-
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
-
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
-
-## Submitting your solution
-
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://medium.com/frontend-mentor/a-complete-guide-to-submitting-solutions-on-frontend-mentor-ac6384162248) for tips on how to do this.
-
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
-
-## Sharing your solution
-
-There are multiple places you can share your solution:
-
-1. Share your solution page in the **#finished-projects** channel of the [community](https://www.frontendmentor.io/community).
-2. Tweet [@frontendmentor](https://twitter.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in the tweet. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on other social channels like LinkedIn.
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
-
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback.
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi@frontendmentor.io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+function About() {
+return (
+<section className="about">
+<div className="about__img-box--dark">
+<img src={aboutImgDark} alt="black colored furnitures" />
+</div>
+<div className="about__text-box container">
+<h2>ABOUT OUR FURNITURE</h2>
+<p>
+Our multifunctional collection blends design and function to suit your
+individual taste. Make each room unique, or pick a cohesive theme that
+best express your interests and what inspires you. Find the furniture
+pieces you need, from traditional to contemporary styles or anything
+in between. Product specialists are available to help you create your
+dream space.
+</p>
+</div>
+<div className="about__img-box--light">
+<img src={aboutImgLight} alt="black colored furnitures" />
+</div>
+</section>
+);
+}
